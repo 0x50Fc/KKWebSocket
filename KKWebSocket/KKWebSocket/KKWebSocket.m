@@ -314,7 +314,11 @@ static const size_t  KKMaxFrameSize        = 32;
             break;
             
         case NSStreamEventHasSpaceAvailable:
-            
+        {
+            NSArray * messages = [NSArray arrayWithArray:self.writeQueue];
+            [self.writeQueue removeAllObjects];
+            [self processWriteQueue:messages];
+        }
             break;
             
         case NSStreamEventErrorOccurred:
