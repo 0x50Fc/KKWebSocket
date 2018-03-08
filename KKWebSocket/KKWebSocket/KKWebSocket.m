@@ -42,6 +42,7 @@ NSThread * KKWebSocketRunLoopThread(void) {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         thread = [[NSThread alloc] initWithTarget:[NSRunLoop class] selector:@selector(KKWebSocketRunloop) object:nil];
+        [thread setName:@"KKWebSocketRunLoopThread"];
         [thread start];
         [[NSRunLoop class] performSelector:@selector(KKWebSocketRunloopDone) onThread:thread withObject:nil waitUntilDone:YES];
     });
@@ -315,9 +316,7 @@ static const size_t  KKMaxFrameSize        = 32;
             
         case NSStreamEventHasSpaceAvailable:
         {
-            NSArray * messages = [NSArray arrayWithArray:self.writeQueue];
-            [self.writeQueue removeAllObjects];
-            [self processWriteQueue:messages];
+            [self processWriteQueue];
         }
             break;
             
@@ -642,9 +641,13 @@ static const size_t  KKMaxFrameSize        = 32;
     return _writeQueue;
 }
 
-- (void) processWriteQueue:(NSArray *) messages {
+- (void) processWriteQueue {
     
-    for(KKWebSocketMessage * message in messages) {
+    KKWebSocketMessage * message = [_writeQueue lastObject];
+    
+    while(message) {
+        
+        [_writeQueue removeLastObject];
         
         NSData * data = message.data;
         KKOpCode code = message.code;
@@ -704,8 +707,18 @@ static const size_t  KKMaxFrameSize        = 32;
             }
         }
         
+        message = [_writeQueue lastObject];
     }
     
+}
+
+-(void) addMessage:(KKWebSocketMessage *) v {
+    
+    [self.writeQueue insertObject:v atIndex:0];
+    
+    if([self.outputStream hasSpaceAvailable]) {
+        [self processWriteQueue];
+    }
 }
 
 -(void)dequeueWrite:(NSData*)data withCode:(KKOpCode)code {
@@ -718,13 +731,8 @@ static const size_t  KKMaxFrameSize        = 32;
     v.data = data;
     v.code = code;
     
-    [self.writeQueue addObject:v];
+    [self performSelector:@selector(addMessage:) onThread:KKWebSocketRunLoopThread() withObject:v waitUntilDone:NO];
     
-    if([self.outputStream hasSpaceAvailable]) {
-        NSArray * messages = [NSArray arrayWithArray:self.writeQueue];
-        [self.writeQueue removeAllObjects];
-        [self performSelector:@selector(processWriteQueue:) onThread:KKWebSocketRunLoopThread() withObject:messages waitUntilDone:NO];
-    }
 }
 
 - (void)doDisconnect:(NSError*)error {
