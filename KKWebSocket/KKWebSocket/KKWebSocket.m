@@ -153,6 +153,13 @@ static const size_t  KKMaxFrameSize        = 32;
     
     return self;
 }
+    
+-(dispatch_queue_t) queue {
+    if(_queue == nil) {
+        _queue = dispatch_get_main_queue();
+    }
+    return _queue;
+}
 
 - (void)connect {
     
@@ -403,7 +410,7 @@ static const size_t  KKMaxFrameSize        = 32;
         if (status == YES) {
             _state = KKWebSocketStateConnected;
             __weak typeof(self) weakSelf = self;
-            dispatch_async(dispatch_get_main_queue(),^{
+            dispatch_async(self.queue,^{
                 if(weakSelf.onconnected) {
                     weakSelf.onconnected();
                 }
@@ -615,14 +622,14 @@ static const size_t  KKMaxFrameSize        = 32;
                 return NO;
             }
             __weak typeof(self) weakSelf = self;
-            dispatch_async(dispatch_get_main_queue(),^{
+            dispatch_async(self.queue,^{
                 if(weakSelf.ontext) {
                     weakSelf.ontext(str);
                 }
             });
         } else if(response.code == KKOpCodeBinaryFrame) {
             __weak typeof(self) weakSelf = self;
-            dispatch_async(dispatch_get_main_queue(),^{
+            dispatch_async(self.queue,^{
                 if(weakSelf.ondata) {
                     weakSelf.ondata(data);
                 }
@@ -739,7 +746,7 @@ static const size_t  KKMaxFrameSize        = 32;
     if(_state != KKWebSocketStateDisconnected) {
         _state = KKWebSocketStateDisconnected;
         __weak typeof(self) weakSelf = self;
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(self.queue, ^{
             if(weakSelf.ondisconnected) {
                 weakSelf.ondisconnected(error);
             }

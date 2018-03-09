@@ -29,14 +29,16 @@ extern "C" {
 
 @interface KKWebSocket : NSObject
 
-@property(nonatomic,assign,readonly) KKWebSocketState state;
+@property(nonatomic,strong) dispatch_queue_t queue;
+@property(nonatomic,assign) KKWebSocketState state;
 @property(nonatomic,strong,readonly) NSURL * url;
 @property(nonatomic, strong) void (^onconnected)(void);
 @property(nonatomic, strong) void (^ondisconnected)(NSError*);
 @property(nonatomic, strong) void (^ondata)(NSData*);
 @property(nonatomic, strong) void (^ontext)(NSString*);
 @property(nonatomic,strong,readonly) NSMutableDictionary * headers;
-
+@property(nonatomic,strong,readonly) NSThread * thread;
+    
 -(instancetype) initWithURL:(NSURL *) url;
 
 -(void) connect;

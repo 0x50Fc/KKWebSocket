@@ -12,8 +12,20 @@ typedef enum KKWebSocketState {
     KKWebSocketStateNone,
     KKWebSocketStateConnecting,
     KKWebSocketStateConnected,
+    KKWebSocketStateDisconnecting,
     KKWebSocketStateDisconnected
 } KKWebSocketState;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
+    extern NSRunLoop * KKWebSocketRunLoop(void);
+    extern NSThread * KKWebSocketRunLoopThread(void);
+    
+#ifdef __cplusplus
+}
+#endif
 
 @interface KKWebSocket : NSObject
 
