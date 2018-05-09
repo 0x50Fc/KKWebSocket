@@ -23,6 +23,8 @@
 /* Begin PBXBuildFile section */
 		1A0A667A202D9529008DA5A3 /* KKWebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A0A6678202D9529008DA5A3 /* KKWebSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1A0A6681202D956F008DA5A3 /* KKWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A0A6680202D956F008DA5A3 /* KKWebSocket.m */; };
+		1AC8941120A30A8500F3E4CA /* KKJSWebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AC8940F20A30A8500F3E4CA /* KKJSWebSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1AC8941220A30A8500F3E4CA /* KKJSWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC8941020A30A8500F3E4CA /* KKJSWebSocket.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		1A0A6678202D9529008DA5A3 /* KKWebSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KKWebSocket.h; sourceTree = "<group>"; };
 		1A0A6679202D9529008DA5A3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A0A6680202D956F008DA5A3 /* KKWebSocket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KKWebSocket.m; sourceTree = "<group>"; };
+		1AC8940F20A30A8500F3E4CA /* KKJSWebSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KKJSWebSocket.h; sourceTree = "<group>"; };
+		1AC8941020A30A8500F3E4CA /* KKJSWebSocket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KKJSWebSocket.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +68,8 @@
 			children = (
 				1A0A6678202D9529008DA5A3 /* KKWebSocket.h */,
 				1A0A6680202D956F008DA5A3 /* KKWebSocket.m */,
+				1AC8940F20A30A8500F3E4CA /* KKJSWebSocket.h */,
+				1AC8941020A30A8500F3E4CA /* KKJSWebSocket.m */,
 				1A0A6679202D9529008DA5A3 /* Info.plist */,
 			);
 			path = KKWebSocket;
@@ -77,6 +83,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A0A667A202D9529008DA5A3 /* KKWebSocket.h in Headers */,
+				1AC8941120A30A8500F3E4CA /* KKJSWebSocket.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +176,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AC8941220A30A8500F3E4CA /* KKJSWebSocket.m in Sources */,
 				1A0A6681202D956F008DA5A3 /* KKWebSocket.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
