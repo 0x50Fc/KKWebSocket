@@ -784,7 +784,7 @@ static const size_t  KKMaxFrameSize        = 32;
         [_outputStream removeFromRunLoop:KKWebSocketRunLoop() forMode:NSDefaultRunLoopMode];
         [_outputStream close];
     }
-    NSLog(@"KKWebSocket dealloc");
+    NSLog(@"[KK] KKWebSocket dealloc");
 }
 
 @end

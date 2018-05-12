@@ -11,49 +11,6 @@
 
 @implementation KKJSWebSocket
 
-+(void) openlibs:(JSContext *) jsContext queue:(dispatch_queue_t) queue {
-    
-    JSValue * v = [JSValue valueWithNewObjectInContext:jsContext];
-    
-    v[@"alloc"] = ^JSValue*() {
-        
-        NSArray * arguments = [JSContext currentArguments];
-        NSString * url = nil;
-        NSString * protocol = nil;
-        
-        if([arguments count] >0) {
-            url = [arguments[0] toString];
-        }
-        
-        if([arguments count] >1) {
-            url = [arguments[1] toString];
-        }
-        
-        if(url) {
-            
-            KKWebSocket * webSocket = [[KKWebSocket alloc] initWithURL:[NSURL URLWithString:url]];
-            
-            webSocket.queue = queue;
-            
-            if(protocol != nil) {
-                webSocket.headers[@"Sec-WebSocket-Protocol"] = protocol;
-            }
-            
-            KKJSWebSocket * jsWebSocket = [[KKJSWebSocket alloc] initWithWebSocket:webSocket];
-            
-            [webSocket connect];
-            
-            return [JSValue valueWithObject:jsWebSocket inContext:[JSContext currentContext]];
-            
-        }
-        
-        return nil;
-    };
-    
-    [jsContext.globalObject setValue:v forProperty:@"WebSocket"];
-    
-}
-
 -(instancetype) initWithWebSocket:(KKWebSocket *) webSocket {
     if((self = [super init])) {
         _webSocket = webSocket;
@@ -72,7 +29,9 @@
 }
 
 -(void) send:(JSValue *)data {
-    
+    if([data isString]) {
+        [_webSocket writeString:[data toString]];
+    }
 }
 
 -(void) on:(NSString *)name fn:(JSValue *)fn {
@@ -117,6 +76,15 @@
 
 -(void) close {
     [_webSocket disconnect];
+}
+
+-(void) recycle {
+    _webSocket.onconnected = nil;
+    _webSocket.ondisconnected = nil;
+    _webSocket.ondata = nil;
+    _webSocket.ontext = nil;
+    [_webSocket disconnect];
+    _webSocket = nil;
 }
 
 @end
