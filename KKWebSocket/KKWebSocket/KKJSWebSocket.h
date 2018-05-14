@@ -25,10 +25,10 @@ JSExportAs(send,
 
 @interface KKJSWebSocket : NSObject<KKJSWebSocket>
 
-+(void) openlibs:(JSContext *) jsContext queue:(dispatch_queue_t) queue;
-
 @property(nonatomic,strong,readonly) KKWebSocket * webSocket;
 
 -(instancetype) initWithWebSocket:(KKWebSocket *) webSocket;
+
+-(void) recycle;
 
 @end
