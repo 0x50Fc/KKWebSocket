@@ -72,7 +72,9 @@
 }
 
 -(void) send:(JSValue *)data {
-    
+    if([data isString]) {
+        [_webSocket writeString:[data toString]];
+    }
 }
 
 -(void) on:(NSString *)name fn:(JSValue *)fn {
@@ -91,7 +93,7 @@
         
         if([fn isObject]) {
             _webSocket.ondisconnected = ^(NSError * error) {
-                [fn callWithArguments:@[[error localizedDescription]]];
+                [fn callWithArguments:[NSArray arrayWithObjects:[error localizedDescription], nil]];
             };
         } else {
             _webSocket.ondisconnected = nil;
