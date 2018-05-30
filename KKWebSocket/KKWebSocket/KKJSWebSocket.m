@@ -40,7 +40,12 @@
         
         if([fn isObject]) {
             _webSocket.onconnected = ^{
-                [fn callWithArguments:@[]];
+                @try{
+                    [fn callWithArguments:@[]];
+                }
+                @catch(NSException * ex) {
+                    NSLog(@"[KK] %@",ex);
+                }
             };
         } else {
             _webSocket.onconnected = nil;
@@ -50,7 +55,12 @@
         
         if([fn isObject]) {
             _webSocket.ondisconnected = ^(NSError * error) {
-                [fn callWithArguments:[NSArray arrayWithObjects:[error localizedDescription], nil]];
+                @try{
+                    [fn callWithArguments:[NSArray arrayWithObjects:[error localizedDescription], nil]];
+                }
+                @catch(NSException * ex) {
+                    NSLog(@"[KK] %@",ex);
+                }
             };
         } else {
             _webSocket.ondisconnected = nil;
@@ -61,11 +71,21 @@
         
         if([fn isObject]) {
             _webSocket.ondata = ^(NSData * data) {
-                [fn callWithArguments:@[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]]];
+                @try {
+                    [fn callWithArguments:@[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]]];
+                }
+                @catch(NSException * ex) {
+                    NSLog(@"[KK] %@",ex);
+                }
             };
             
             _webSocket.ontext = ^(NSString * text) {
-                [fn callWithArguments:@[text]];
+                @try{
+                    [fn callWithArguments:@[text]];
+                }
+                @catch(NSException * ex) {
+                    NSLog(@"[KK] %@",ex);
+                }
             };
         } else {
             _webSocket.ondata = nil;
