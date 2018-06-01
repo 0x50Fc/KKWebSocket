@@ -264,7 +264,7 @@ static const size_t  KKMaxFrameSize        = 32;
                                          (__bridge CFStringRef)self.headers[key]);
     }
     
-    NSLog(@"[KK] %@", urlRequest);
+    NSLog(@"[KK] [WS] %@", self.url.absoluteString);
 
     NSData *serializedRequest = (__bridge_transfer NSData *)(CFHTTPMessageCopySerializedMessage(urlRequest));
     [self initStreamsWithData:serializedRequest port:port];
